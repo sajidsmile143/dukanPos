@@ -249,7 +249,7 @@ export default function POSPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-5rem)] grid grid-cols-1 lg:grid-cols-12 gap-4">
+    <div className="min-h-[calc(100vh-5rem)] lg:h-[calc(100vh-5rem)] grid grid-cols-1 lg:grid-cols-12 gap-4 pb-12 lg:pb-0">
       {/* LEFT COLUMN: Product Catalog & Search (Cols 7) */}
       <div className="lg:col-span-7 flex flex-col h-full bg-white rounded-2xl border border-slate-200 shadow-sm p-4 overflow-hidden">
         {/* Top Search & Barcode Listener Bar */}

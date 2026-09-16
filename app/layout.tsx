@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Header from '@/components/layout/Header';
-import Sidebar from '@/components/layout/Sidebar';
+import AppLayoutWrapper from '@/components/layout/AppLayoutWrapper';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
@@ -16,14 +15,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="h-screen w-screen overflow-hidden flex bg-slate-100 antialiased selection:bg-emerald-500 selection:text-white">
-        <Sidebar />
-        <div className="flex-1 flex flex-col h-full overflow-hidden">
-          <Header />
-          <main className="flex-1 overflow-auto p-4 md:p-6 bg-slate-50">
-            {children}
-          </main>
-        </div>
+      <body>
+        <AppLayoutWrapper>{children}</AppLayoutWrapper>
         <Toaster position="top-right" richColors />
       </body>
     </html>

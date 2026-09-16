@@ -8,9 +8,8 @@ import {
   Package, 
   Users, 
   BarChart3, 
-  Zap, 
   QrCode,
-  FileText
+  X
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -41,25 +40,42 @@ const NAV_ITEMS = [
   },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname();
 
-  return (
-    <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between border-r border-slate-800 shrink-0">
+  const SidebarContent = (
+    <div className="h-full flex flex-col justify-between">
       <div>
         {/* Brand Banner */}
-        <div className="p-4 border-b border-slate-800 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xl shadow-md">
-            D
+        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xl shadow-md">
+              D
+            </div>
+            <div>
+              <h2 className="font-bold text-white text-base leading-tight tracking-tight">
+                Dukaan POS
+              </h2>
+              <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-semibold">
+                Pakistan Retail v1.0
+              </span>
+            </div>
           </div>
-          <div>
-            <h2 className="font-bold text-white text-base leading-tight tracking-tight">
-              Dukaan POS
-            </h2>
-            <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-semibold">
-              Pakistan Retail v1.0
-            </span>
-          </div>
+
+          {/* Close button for Mobile Drawer */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="md:hidden text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Navigation Menu */}
@@ -75,6 +91,7 @@ export default function Sidebar() {
               <Link
                 key={item.path}
                 href={item.path}
+                onClick={onClose}
                 className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all font-medium text-sm ${
                   isActive
                     ? 'bg-emerald-600 text-white shadow-md font-semibold'
@@ -117,6 +134,31 @@ export default function Sidebar() {
           <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (hidden on mobile, visible on md+) */}
+      <aside className="hidden md:flex w-64 bg-slate-900 text-slate-300 flex-col justify-between border-r border-slate-800 shrink-0">
+        {SidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Backdrop & Sidebar Overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop overlay */}
+          <div
+            onClick={onClose}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
+          />
+
+          {/* Slide-out Mobile Sidebar */}
+          <aside className="relative w-72 bg-slate-900 text-slate-300 flex flex-col justify-between border-r border-slate-800 shadow-2xl z-50 animate-in slide-in-from-left duration-200">
+            {SidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }
